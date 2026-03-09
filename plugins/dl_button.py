@@ -275,8 +275,8 @@ async def download_coroutine(bot, session, url, file_name, chat_id, message_id, 
     downloaded = 0
     display_message = ""
     async with session.get(url, timeout=Config.PROCESS_MAX_TIMEOUT) as response:
-        total_length = int(response.headers["Content-Length"])
-        content_type = response.headers["Content-Type"]
+        total_length = int(response.headers.get("Content-Length", 0))
+        content_type = response.headers.get("Content-Type", "")
         if "text" in content_type and total_length < 500:
             return await response.release()
         await bot.edit_message_text(
@@ -284,7 +284,7 @@ async def download_coroutine(bot, session, url, file_name, chat_id, message_id, 
             message_id,
             text="""Preparing your request...
 ⚡️ 𝗨𝗥𝗟: <a href='{}'>❝ 𝐋𝐚𝐳𝐲 𝐔𝐫𝐥 ❞</a>
-🎲 𝗙𝗶𝗹𝗲 𝗦𝗶𝘇𝗲: {}""".format(url, humanbytes(total_length))
+🎲 𝗙𝗶𝗹𝗲 𝗦𝗶𝘇𝗲: {}""".format(url, humanbytes(total_length) if total_length > 0 else "Unknown")
         )
         with open(file_name, "wb") as f_handle:
             while True:
@@ -295,12 +295,12 @@ async def download_coroutine(bot, session, url, file_name, chat_id, message_id, 
                 downloaded += Config.CHUNK_SIZE
                 now = time.time()
                 diff = now - start
-                if round(diff % 5.00) == 0 or downloaded == total_length:
-                    percentage = downloaded * 100 / total_length
+                if round(diff % 5.00) == 0 or (total_length > 0 and downloaded >= total_length):
+                    if total_length <= 0 or diff <= 0:
+                        continue
                     speed = downloaded / diff
                     elapsed_time = round(diff) * 1000
-                    time_to_completion = round(
-                        (total_length - downloaded) / speed) * 1000
+                    time_to_completion = round((total_length - downloaded) / speed) * 1000
                     estimated_total_time = elapsed_time + time_to_completion
                     try:
                         current_message = """\n\n** ⭑┗━┫⦀⦙ Download Status ⦙⦀┣━┛⭑**
