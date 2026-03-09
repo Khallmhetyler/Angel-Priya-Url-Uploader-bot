@@ -16,45 +16,58 @@
 
 👉 Upload Mediafire, Zippyshare, Hxfile, Anonfiles, Antfiles URL using LK21
 
-
 ### ⚡️ Configs 
 
 * `TG_BOT_TOKEN`  - Create a New BOT to Get bot token. follow link  https://telegram.me/BotFather
 
-* `API_ID` - From my.telegram.org 
+* `API_ID` (or `APP_ID`) - From my.telegram.org 
 
 * `API_HASH` - From my.telegram.org 
 
-* `AUTH_USERS`  - Your Telegram + Your your paid users id.
+* `AUTH_USERS`  - Your Telegram + Your paid users id.
   - NOTE - Only `AUTH_USERS` can use this BOT. SO you must have to give your id.
 
-* `LAZY_DEVELOPER` - Give ADMIN id in this field.
+* `LAZY_DEVELOPER` - Give ADMIN id in this field. (`LAZY_ADMIN` also supported)
 
-* `WEBHOOK` - Give value `LazyDev`.
+* `DEF_THUMB_NAIL_VID_S` - default thumbnail to be used in the videos. Incase, yt-dlp is unable to find a thumbnail.
 
-* `DEF_THUMB_NAIL_VID_S` - default thumbnail to be used in the videos. Incase, youtube-dl is unable to find a thumbnail.
+* `LOG_CHANNEL` - Optional channel/group id where uploads are forwarded for logging.
 
-* `LOG_CHANNEL` - To keep an eye on the users. If they do upload something illegal.
+* `HTTP_PROXY` - Optional proxy for georestricted sites.
 
-  ### 📶 DEPLOYEMENT SUPPORT
+## 🚀 Deploy (Telegram bot)
 
-<details><summary>🔥 Deploy To Koyeb 🔥</summary>
-<p>
-<br>                 
-<a target="/blank" href="https://app.koyeb.com/deploy?type=git&repository=github.com/LazyDeveloperr/Angel-Priya-Url-Uploader-bot&branch=master&name=LazyMissPerfectGOT" >
-  <img src="https://www.koyeb.com/static/images/deploy/button.svg" alt="Deploy">
-</a>
-</p>
-</details>
-<details><summary>🧡Deploy To Heroku🧡</summary>
-<p>
-<br>
-<a href="https://heroku.com/deploy?template=https://github.com/LazyDeveloperr/Angel-Priya-Url-Uploader-bot">
-  <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
-</a>
-</p>
-</details>
+### 1) Local run
 
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+export TG_BOT_TOKEN="123456:ABC..."
+export API_ID="123456"
+export API_HASH="your_api_hash"
+export AUTH_USERS="123456789"
+export LAZY_DEVELOPER="123456789"
+python3 bot.py
+```
+
+### 2) Docker run
+
+```bash
+docker build -t angel-priya-bot .
+docker run --rm \
+  -e TG_BOT_TOKEN="123456:ABC..." \
+  -e API_ID="123456" \
+  -e API_HASH="your_api_hash" \
+  -e AUTH_USERS="123456789" \
+  -e LAZY_DEVELOPER="123456789" \
+  angel-priya-bot
+```
+
+### 3) Heroku/Koyeb
+Use worker process (`python3 bot.py`) and set the same environment variables in dashboard/secrets.
+
+> Note: Downloading content from YouTube may be restricted by YouTube Terms of Service and local laws. Use responsibly.
 
 ### 🔗 important_Links
 - [❣️ Join Youtube](https://www.youtube.com/channel/UCY-iDra0x2hdd9PdHKcZkRw)
